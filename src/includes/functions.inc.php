@@ -272,27 +272,33 @@ function psm_parse_msg($status, $type, $vars) {
  * @return string cURL result
  */
 function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true) {
-	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
+	if (substr($href,0,22) == "http://localhost/post/") {
+		$file = substr($href,16);
+		require_once(dirname(__FILE__).$file);
+		return $result;
+	}
+	else {
+		$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_HEADER, $header);
-	curl_setopt($ch, CURLOPT_NOBODY, (!$body));
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-	curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-	curl_setopt($ch, CURLOPT_ENCODING, '');
-	curl_setopt($ch, CURLOPT_URL, $href);
-	if($add_agent) {
-		curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_HEADER, $header);
+		curl_setopt($ch, CURLOPT_NOBODY, (!$body));
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+		curl_setopt($ch, CURLOPT_ENCODING, '');
+		curl_setopt($ch, CURLOPT_URL, $href);
+		if($add_agent) {
+			curl_setopt ($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; phpservermon/'.PSM_VERSION.'; +http://www.phpservermonitor.org)');
+		}
+
+		$result = curl_exec($ch);
+		return $result;
 	}
 
-	$result = curl_exec($ch);
-	curl_close($ch);
-
-	return $result;
 }
 
 /**

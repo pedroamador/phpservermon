@@ -7,3 +7,7 @@
 .project
 /.vagrant/
 /puphpet/files/dot/ssh/
+/src/includes/post/*
+*~
+!.gitignore
+!.gitkeep
