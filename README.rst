@@ -50,6 +50,13 @@ The following SMS gateways are currently available:
 
 Please note: for these gateways you will need an account with sufficient credits.
 
+FUNCIONALIDAD EXTRA
+-------------------
+
+Si el check lo añades con http://localhost/post/api-example.php
+se ejecutará el archivo src/includes/api-example.php
+
+Ese archivo puede ser un POST... o cualquier otro tipo de check que devuelva una cadena evaluable por la app
 
 Download
 --------
